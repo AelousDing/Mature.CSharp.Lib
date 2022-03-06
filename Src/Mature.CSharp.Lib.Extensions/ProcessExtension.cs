@@ -19,5 +19,21 @@ namespace Mature.CSharp.Lib.Extensions
             output = p.StandardOutput.ReadToEnd();
             return p.WaitForExit(milliseconds);
         }
+        public static bool Cmd(string fileName, string args, int milliseconds, out string output)
+        {
+            var processInfo = new ProcessStartInfo("cmd.exe", "/S /C " + args)
+            {
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                WindowStyle = ProcessWindowStyle.Hidden,
+                RedirectStandardOutput = true
+            };
+
+            var process = new Process { StartInfo = processInfo };
+            process.Start();
+            output = process.StandardOutput.ReadToEnd();
+
+            return process.WaitForExit(milliseconds);
+        }
     }
 }
